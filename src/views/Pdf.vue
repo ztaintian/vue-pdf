@@ -1,17 +1,40 @@
 <template>
   <div>
-    <v-pdf src="/static/test.pdf"></v-pdf>
-    <!-- <iframe href="../../static/test.pdf"></iframe> -->
+    <pdf v-for="i in numPages" :key="i" :src="url" :page="i"></pdf>
   </div>
 </template>
 
 <script>
 import pdf from "vue-pdf";
-
+console.log(pdf)
 export default {
-  name: "pdf",
   components: {
-    'v-pdf': pdf
+    pdf
+  },
+  data() {
+    return {
+      url: "",
+      numPages: 1
+    };
+  },
+  mounted: function() {
+    this.getNumPages(
+      "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf"
+    );
+  },
+  methods: {
+    getNumPages(url) {
+      var loadingTask = pdf.createLoadingTask(url);
+      loadingTask.promise
+        .then(pdf => {
+          this.url = loadingTask;
+          this.numPages = pdf.numPages;
+        })
+        .catch(err => {
+          console.error("pdf加载失败"+err);
+        });
+    }
   }
 };
 </script>
+
