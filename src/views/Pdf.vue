@@ -6,7 +6,6 @@
 
 <script>
 import pdf from "vue-pdf";
-console.log(pdf)
 export default {
   components: {
     pdf
@@ -25,6 +24,7 @@ export default {
   methods: {
     getNumPages(url) {
       var loadingTask = pdf.createLoadingTask(url);
+      console.log(loadingTask)
       loadingTask.promise
         .then(pdf => {
           this.url = loadingTask;
